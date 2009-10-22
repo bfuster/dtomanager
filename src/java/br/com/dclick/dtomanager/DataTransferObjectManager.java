@@ -26,7 +26,7 @@ import br.com.dclick.dtomanager.handlers.CompositionHandler;
 import br.com.dclick.dtomanager.handlers.DTOHandler;
 import br.com.dclick.dtomanager.handlers.EnumToStringHandler;
 import br.com.dclick.dtomanager.handlers.FlexNumberHandler;
-import br.com.dclick.dtomanager.handlers.ListingHandler;
+import br.com.dclick.dtomanager.handlers.CollectionHandler;
 import br.com.dclick.dtomanager.handlers.StringToEnumHandler;
 
 /**
@@ -46,7 +46,7 @@ public class DataTransferObjectManager {
 		handlers.put( Composition.class, new CompositionHandler() );
 		handlers.put( EnumToString.class, new EnumToStringHandler() );
 		handlers.put( FlexNumber.class, new FlexNumberHandler() );
-		handlers.put( Collect.class, new ListingHandler() );
+		handlers.put( Collect.class, new CollectionHandler() );
 		handlers.put( StringToEnum.class, new StringToEnumHandler() );
 
 	}
@@ -167,28 +167,28 @@ public class DataTransferObjectManager {
 	}
 
 	/**
-	 * Copies a list
+	 * Copy collection
 	 * 
 	 * @param <T>
 	 * @param to
 	 * @param from
 	 * @return
 	 */
-	public < T > Collection< T > copyList( Class< T > to, Collection< ? extends Object > from ) {
+	public < T > Collection< T > copyCollection( Class< T > to, Collection< ? extends Object > from ) {
 
-		return copyList( to, from, null );
+		return copyCollection( to, from, null );
 
 	}
 
 	/**
-	 * Copies a DTO list with defined properties
+	 * Copy collection with defined properties
 	 * 
 	 * @param <T>
 	 * @param to
 	 * @param from
 	 * @return
 	 */
-	public < T > Collection< T > copyList( Class< T > to, Collection< ? extends Object > from, String[] props ) {
+	public < T > Collection< T > copyCollection( Class< T > to, Collection< ? extends Object > from, String[] props ) {
 
 		if ( from == null || from.size() == 0 )
 			return new ArrayList< T >();

@@ -6,12 +6,12 @@ import br.com.dclick.dtomanager.DataTransferObjectManager;
 import br.com.dclick.dtomanager.annotations.Collect;
 
 /**
- * Listing handler
+ * Collection handler
  * 
  * @author bfuster
  * 
  */
-public class ListingHandler implements DTOHandler {
+public class CollectionHandler implements DTOHandler {
 
 	/*
 	 * (non-Javadoc)
@@ -24,7 +24,7 @@ public class ListingHandler implements DTOHandler {
 	public Object handle( Field f, Object value ) {
 
 		Class toClazz = f.getAnnotation( Collect.class ).value();
-		return new DataTransferObjectManager().copyList( toClazz, (java.util.Collection< Object >) value );
+		return new DataTransferObjectManager().copyCollection( toClazz, (java.util.Collection< Object >) value );
 
 	}
 }
