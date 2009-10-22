@@ -2,6 +2,7 @@ package br.com.dclick.dtomanager;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,7 +101,8 @@ public class DataTransferObjectManager {
 							value = ( (DTOHandler) handlers.get( a.annotationType() ) ).handle( f, value );
 
 					/* set value */
-					new Mirror().on( newobj ).invoke().setterFor( f ).withValue( value );
+					if ( value != null )
+						new Mirror().on( newobj ).invoke().setterFor( f ).withValue( value );
 
 				}
 
@@ -121,6 +123,10 @@ public class DataTransferObjectManager {
 	 */
 	private static boolean goAhead( Field f, HashMap props ) {
 
+		/* final with public or private and static */
+		if ( f.getModifiers() >= Modifier.FINAL && f.getModifiers() < Modifier.SYNCHRONIZED )
+			return false;
+		
 		if ( props != null && !props.isEmpty() )
 			return ( props.containsKey( f.getName() ) );
 
