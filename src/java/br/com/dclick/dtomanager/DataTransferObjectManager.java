@@ -19,6 +19,7 @@ import br.com.dclick.dtomanager.annotations.FlexNumber;
 import br.com.dclick.dtomanager.annotations.Ignore;
 import br.com.dclick.dtomanager.annotations.Listing;
 import br.com.dclick.dtomanager.annotations.StringToEnum;
+import br.com.dclick.dtomanager.exceptions.IllegalArgumentRuntimeException;
 import br.com.dclick.dtomanager.handlers.CommonHandler;
 import br.com.dclick.dtomanager.handlers.CompositionHandler;
 import br.com.dclick.dtomanager.handlers.DTOHandler;
@@ -28,9 +29,9 @@ import br.com.dclick.dtomanager.handlers.ListingHandler;
 import br.com.dclick.dtomanager.handlers.StringToEnumHandler;
 
 /**
- * This class will create DTO's to send to flex.
+ * Data transfer object implementation.
  * 
- * @author fuster
+ * @author bfuster
  * 
  */
 public class DataTransferObjectManager {
@@ -58,13 +59,11 @@ public class DataTransferObjectManager {
 	 * @param props
 	 * @return
 	 */
-	@SuppressWarnings( "unchecked" )
 	public < T > T doCopy( Class< T > to, Object from, String[] props ) {
 
 		logger.debug( String.format( "Copying %1$s to new %2$s", from.getClass(), to ) );
 
 		List< Field > fields = new Mirror().on( to ).reflectAll().fields();
-		HashMap propsMap = toMap( props );
 
 		T newobj;
 
@@ -72,13 +71,13 @@ public class DataTransferObjectManager {
 		try {
 			newobj = to.newInstance();
 		} catch (Exception ex) {
-			throw new RuntimeException( "Where is your public no args contructor?", ex );
+			throw new IllegalArgumentRuntimeException( "Where is your public no args contructor?", ex );
 		}
 
-		/* copy field values */
+		/* for each property */
 		for ( Field f : fields ) {
 
-			if ( goAhead( f, propsMap ) ) {
+			if ( goAhead( f, props ) ) {
 
 				String field;
 
@@ -88,6 +87,7 @@ public class DataTransferObjectManager {
 				else
 					field = f.getName();
 
+				/* get the value */
 				Object value = new Mirror().on( from ).invoke().getterFor( field );
 
 				if ( value != null ) {
@@ -100,7 +100,7 @@ public class DataTransferObjectManager {
 						if ( handlers.containsKey( a.annotationType() ) )
 							value = ( (DTOHandler) handlers.get( a.annotationType() ) ).handle( f, value );
 
-					/* set value */
+					/* set changed value */
 					if ( value != null )
 						new Mirror().on( newobj ).invoke().setterFor( f ).withValue( value );
 
@@ -115,41 +115,41 @@ public class DataTransferObjectManager {
 	}
 
 	/**
-	 * Verify if field can be copied
+	 * Check if field can be copied
 	 * 
 	 * @param f
 	 * @param props
 	 * @return
 	 */
-	private boolean goAhead( Field f, HashMap props ) {
+	private boolean goAhead( Field f, String[] props ) {
 
-		/* final with public or private and static */
+		/* final with public or private and static. help me. */
 		if ( f.getModifiers() >= Modifier.FINAL && f.getModifiers() < Modifier.SYNCHRONIZED )
 			return false;
-		
-		if ( props != null && !props.isEmpty() )
-			return ( props.containsKey( f.getName() ) );
 
+		/* check props */
+		if ( props != null && props.length > 0 )
+			return ( searchPropertiesArray( props, f.getName() ) );
+
+		/* check ignore */
 		return !( f.isAnnotationPresent( Ignore.class ) );
 	}
 
 	/**
-	 * String to map for declarative search (containsKey)
+	 * Search for some at the properties array.
 	 * 
 	 * @param props
+	 * @param value
 	 * @return
 	 */
-	private HashMap toMap( String[] props ) {
-
-		HashMap< String, String > map = new HashMap< String, String >();
-
-		if ( props == null )
-			return map;
+	private boolean searchPropertiesArray( String[] props, String value ) {
 
 		for ( String p : props )
-			map.put( p, null );
+			if ( value.equals( p ) )
+				return true;
 
-		return map;
+		return false;
+
 	}
 
 	/**
@@ -162,11 +162,11 @@ public class DataTransferObjectManager {
 	 */
 	public < T > T copy( Class< T > to, Object from ) {
 
-		return doCopy( to, from, new String[] {} );
+		return doCopy( to, from, null );
 	}
 
 	/**
-	 * Copies a DTO list
+	 * Copies a list
 	 * 
 	 * @param <T>
 	 * @param to

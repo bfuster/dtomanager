@@ -7,19 +7,23 @@ import br.com.dclick.dtomanager.exceptions.IllegalStringIntoEnum;
 
 /**
  * String to enum handler
+ * 
  * @author bfuster
- *
+ * 
  */
 public class StringToEnumHandler implements DTOHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * @see br.com.dclick.dtomanager.handlers.DTOHandler#handle(java.lang.reflect.Field, java.lang.Object)
+	 * 
+	 * @see
+	 * br.com.dclick.dtomanager.handlers.DTOHandler#handle(java.lang.reflect
+	 * .Field, java.lang.Object)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings( "unchecked" )
 	public Object handle( Field f, Object value ) {
 
-		if ( value != null && ( (String) value ).trim().length() <= 0 )
+		if ( ( (String) value ).trim().length() <= 0 )
 			return null;
 
 		if ( f.isAnnotationPresent( StringToEnum.class ) && value != null ) {
@@ -31,7 +35,7 @@ public class StringToEnumHandler implements DTOHandler {
 			} catch (IllegalArgumentException ex) {
 				throw new IllegalStringIntoEnum( e, ex );
 			}
-			
+
 		}
 
 		return value;
