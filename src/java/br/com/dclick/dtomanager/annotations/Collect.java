@@ -7,8 +7,13 @@ import java.lang.annotation.Target;
 
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.FIELD )
-public @interface Listing {
+public @interface Collect {
 
+	/**
+	 * Collection type
+	 * 
+	 * @return
+	 */
 	public Class value();
 
 }

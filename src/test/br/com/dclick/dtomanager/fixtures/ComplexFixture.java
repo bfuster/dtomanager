@@ -1,10 +1,10 @@
 package br.com.dclick.dtomanager.fixtures;
 
-import java.util.List;
+import java.util.Set;
 
+import br.com.dclick.dtomanager.annotations.Collect;
 import br.com.dclick.dtomanager.annotations.Composition;
 import br.com.dclick.dtomanager.annotations.Ignore;
-import br.com.dclick.dtomanager.annotations.Listing;
 
 /**
  * 
@@ -21,8 +21,8 @@ public class ComplexFixture {
 	@Composition
 	private NestedFixture nested;
 
-	@Listing( NestedFixture.class )
-	private List< NestedFixture > list;
+	@Collect( NestedFixture.class )
+	private Set< NestedFixture > list;
 
 	/* getters n' setters */
 
@@ -56,12 +56,12 @@ public class ComplexFixture {
 		this.nested = nested;
 	}
 
-	public List< NestedFixture > getList() {
+	public Set< NestedFixture > getList() {
 
 		return list;
 	}
 
-	public void setList( List< NestedFixture > list ) {
+	public void setList( Set< NestedFixture > list ) {
 
 		this.list = list;
 	}

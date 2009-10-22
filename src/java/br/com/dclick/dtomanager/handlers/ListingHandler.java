@@ -1,10 +1,9 @@
 package br.com.dclick.dtomanager.handlers;
 
 import java.lang.reflect.Field;
-import java.util.List;
 
 import br.com.dclick.dtomanager.DataTransferObjectManager;
-import br.com.dclick.dtomanager.annotations.Listing;
+import br.com.dclick.dtomanager.annotations.Collect;
 
 /**
  * Listing handler
@@ -24,8 +23,8 @@ public class ListingHandler implements DTOHandler {
 	@SuppressWarnings( "unchecked" )
 	public Object handle( Field f, Object value ) {
 
-		Class toClazz = f.getAnnotation( Listing.class ).value();
-		return new DataTransferObjectManager().copyUncheckedList( toClazz, (List< Object >) value );
+		Class toClazz = f.getAnnotation( Collect.class ).value();
+		return new DataTransferObjectManager().copyList( toClazz, (java.util.Collection< Object >) value );
 
 	}
 }

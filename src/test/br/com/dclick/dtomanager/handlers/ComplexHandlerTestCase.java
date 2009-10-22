@@ -1,6 +1,7 @@
 package br.com.dclick.dtomanager.handlers;
 
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -9,7 +10,6 @@ import org.junit.Test;
 import br.com.dclick.dtomanager.DataTransferObjectManager;
 import br.com.dclick.dtomanager.fixtures.ComplexDTOFixture;
 import br.com.dclick.dtomanager.fixtures.ComplexFixture;
-import br.com.dclick.dtomanager.fixtures.NestedDTOFixture;
 import br.com.dclick.dtomanager.fixtures.NestedFixture;
 
 /**
@@ -28,7 +28,11 @@ public class ComplexHandlerTestCase extends TestCase {
 		first.setValue( "fuster" );
 		first.setIgnore( "ignored" );
 		first.setNested( new NestedFixture( 1l ) );
-		first.setList( Arrays.asList( new NestedFixture( 2l ), new NestedFixture( 3l ) ) );
+
+		Set< NestedFixture > collection = new HashSet< NestedFixture >();
+		collection.add( new NestedFixture( 2l ) );
+		collection.add( new NestedFixture( 3l ) );
+		first.setList( collection );
 
 		/* copy */
 		ComplexDTOFixture dto = new DataTransferObjectManager().copy( ComplexDTOFixture.class, first );
@@ -37,8 +41,5 @@ public class ComplexHandlerTestCase extends TestCase {
 		assertEquals( dto.getIgnore(), null );
 		assertEquals( first.getNested().getId(), dto.getNested().getId() );
 		assertEquals( first.getList().size(), dto.getList().size() );
-		/* list check */
-		assertEquals( ( (NestedFixture) first.getList().get( 0 ) ).getId(), ( (NestedDTOFixture) dto.getList().get( 0 ) ).getId() );
-		assertEquals( ( (NestedFixture) first.getList().get( 1 ) ).getId(), ( (NestedDTOFixture) dto.getList().get( 1 ) ).getId() );
 	}
 }

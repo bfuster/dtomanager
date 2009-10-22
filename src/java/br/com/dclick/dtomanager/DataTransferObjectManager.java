@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +14,11 @@ import net.vidageek.mirror.dsl.Mirror;
 import org.apache.log4j.Logger;
 
 import br.com.dclick.dtomanager.annotations.Alias;
+import br.com.dclick.dtomanager.annotations.Collect;
 import br.com.dclick.dtomanager.annotations.Composition;
 import br.com.dclick.dtomanager.annotations.EnumToString;
 import br.com.dclick.dtomanager.annotations.FlexNumber;
 import br.com.dclick.dtomanager.annotations.Ignore;
-import br.com.dclick.dtomanager.annotations.Listing;
 import br.com.dclick.dtomanager.annotations.StringToEnum;
 import br.com.dclick.dtomanager.exceptions.IllegalArgumentRuntimeException;
 import br.com.dclick.dtomanager.handlers.CommonHandler;
@@ -45,7 +46,7 @@ public class DataTransferObjectManager {
 		handlers.put( Composition.class, new CompositionHandler() );
 		handlers.put( EnumToString.class, new EnumToStringHandler() );
 		handlers.put( FlexNumber.class, new FlexNumberHandler() );
-		handlers.put( Listing.class, new ListingHandler() );
+		handlers.put( Collect.class, new ListingHandler() );
 		handlers.put( StringToEnum.class, new StringToEnumHandler() );
 
 	}
@@ -173,7 +174,7 @@ public class DataTransferObjectManager {
 	 * @param from
 	 * @return
 	 */
-	public < T > List< T > copyList( Class< T > to, List< ? extends Object > from ) {
+	public < T > Collection< T > copyList( Class< T > to, Collection< ? extends Object > from ) {
 
 		return copyList( to, from, null );
 
@@ -187,7 +188,7 @@ public class DataTransferObjectManager {
 	 * @param from
 	 * @return
 	 */
-	public < T > List< T > copyList( Class< T > to, List< ? extends Object > from, String[] props ) {
+	public < T > Collection< T > copyList( Class< T > to, Collection< ? extends Object > from, String[] props ) {
 
 		if ( from == null || from.size() == 0 )
 			return new ArrayList< T >();
@@ -201,23 +202,4 @@ public class DataTransferObjectManager {
 
 	}
 
-	/**
-	 * Copies a DTO to list without type
-	 * 
-	 * @param <T>
-	 * @param to
-	 * @param from
-	 * @return
-	 */
-	@SuppressWarnings( "unchecked" )
-	public List copyUncheckedList( Class c, List< ? extends Object > from ) {
-
-		List list = new ArrayList();
-
-		for ( Object o : from )
-			list.add( copy( c, o ) );
-
-		return list;
-
-	}
 }

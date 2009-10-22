@@ -3,12 +3,12 @@
  */
 package br.com.dclick.dtomanager.fixtures;
 
-import java.util.List;
+import java.util.Collection;
 
 import br.com.dclick.dtomanager.annotations.Alias;
+import br.com.dclick.dtomanager.annotations.Collect;
 import br.com.dclick.dtomanager.annotations.Composition;
 import br.com.dclick.dtomanager.annotations.Ignore;
-import br.com.dclick.dtomanager.annotations.Listing;
 
 /**
  * All problems dto
@@ -29,8 +29,8 @@ public class ComplexDTOFixture {
 	@Composition
 	private NestedDTOFixture nested;
 
-	@Listing( NestedDTOFixture.class )
-	private List< NestedDTOFixture > list;
+	@Collect( NestedDTOFixture.class )
+	private Collection< NestedDTOFixture > list;
 
 	/* getters n' setters */
 
@@ -64,12 +64,12 @@ public class ComplexDTOFixture {
 		this.nested = nested;
 	}
 
-	public List< NestedDTOFixture > getList() {
+	public Collection< NestedDTOFixture > getList() {
 
 		return list;
 	}
 
-	public void setList( List< NestedDTOFixture > list ) {
+	public void setList( Collection< NestedDTOFixture > list ) {
 
 		this.list = list;
 	}
