@@ -59,7 +59,7 @@ public class DataTransferObjectManager {
 	 * @return
 	 */
 	@SuppressWarnings( "unchecked" )
-	public static < T > T doCopy( Class< T > to, Object from, String[] props ) {
+	public < T > T doCopy( Class< T > to, Object from, String[] props ) {
 
 		logger.debug( String.format( "Copying %1$s to new %2$s", from.getClass(), to ) );
 
@@ -121,7 +121,7 @@ public class DataTransferObjectManager {
 	 * @param props
 	 * @return
 	 */
-	private static boolean goAhead( Field f, HashMap props ) {
+	private boolean goAhead( Field f, HashMap props ) {
 
 		/* final with public or private and static */
 		if ( f.getModifiers() >= Modifier.FINAL && f.getModifiers() < Modifier.SYNCHRONIZED )
@@ -139,7 +139,7 @@ public class DataTransferObjectManager {
 	 * @param props
 	 * @return
 	 */
-	private static HashMap toMap( String[] props ) {
+	private HashMap toMap( String[] props ) {
 
 		HashMap< String, String > map = new HashMap< String, String >();
 
@@ -160,7 +160,7 @@ public class DataTransferObjectManager {
 	 * @param from
 	 * @return
 	 */
-	public static < T > T copy( Class< T > to, Object from ) {
+	public < T > T copy( Class< T > to, Object from ) {
 
 		return doCopy( to, from, new String[] {} );
 	}
@@ -173,7 +173,7 @@ public class DataTransferObjectManager {
 	 * @param from
 	 * @return
 	 */
-	public static < T > List< T > copyList( Class< T > to, List< ? extends Object > from ) {
+	public < T > List< T > copyList( Class< T > to, List< ? extends Object > from ) {
 
 		return copyList( to, from, null );
 
@@ -187,7 +187,7 @@ public class DataTransferObjectManager {
 	 * @param from
 	 * @return
 	 */
-	public static < T > List< T > copyList( Class< T > to, List< ? extends Object > from, String[] props ) {
+	public < T > List< T > copyList( Class< T > to, List< ? extends Object > from, String[] props ) {
 
 		if ( from == null || from.size() == 0 )
 			return new ArrayList< T >();
@@ -210,7 +210,7 @@ public class DataTransferObjectManager {
 	 * @return
 	 */
 	@SuppressWarnings( "unchecked" )
-	public static List copyUncheckedList( Class c, List< ? extends Object > from ) {
+	public List copyUncheckedList( Class c, List< ? extends Object > from ) {
 
 		List list = new ArrayList();
 

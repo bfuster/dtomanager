@@ -19,7 +19,7 @@ public class CompositionHandler implements DTOHandler {
 	public Object handle( Field f, Object value ) {
 
 		if ( f.isAnnotationPresent( Composition.class ) && value != null )
-			value = DataTransferObjectManager.doCopy( f.getType(), value, f.getAnnotation( Composition.class ).props() );
+			value = new DataTransferObjectManager().doCopy( f.getType(), value, f.getAnnotation( Composition.class ).props() );
 
 		return value;
 	}

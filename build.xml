@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+	 10/22/20009
+	
+	Data Transfer Object
+                   
+	 David Paniz                                                                
+     ====================================================================== -->
+<project name="Data Transfer Object" default="compile">
+
+	<property file="build.properties" />
+	
+
+	<path id="compile.classpath" path=".">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="test.classpath">
+		<fileset dir="${test-lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement path="${bin.classes.dir}" />
+	</path>
+	
+	<target name="clean" description="--> delete build artifacts">
+		<delete dir="${bin.classes.dir}" />
+		<delete dir="${bin.test-classes.dir}" />
+	</target>
+	<target name="prepare" description="--> prepares directories">
+		<mkdir dir="${bin.classes.dir}" />
+		<mkdir dir="${bin.test-classes.dir}" />
+	</target>
+
+	<target name="compile"  depends="clean, prepare" description="--> compiles the classes">
+		<javac destdir="${bin.classes.dir}" srcdir="${src.dir}" classpathref="compile.classpath" debug="true" encoding="UTF-8" />
+
+		<javac destdir="${bin.test-classes.dir}" srcdir="${test-src.dir}" classpathref="test.classpath" debug="true" encoding="UTF-8" />
+	</target>
+</project>

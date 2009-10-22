@@ -22,7 +22,7 @@ public class ListingHandler implements DTOHandler {
 
 		if ( f.isAnnotationPresent( Listing.class ) && value != null )  {
 			Class toClazz = f.getAnnotation( Listing.class ).value();
-			value = DataTransferObjectManager.copyUncheckedList( toClazz, (List< Object >) value );
+			value = new DataTransferObjectManager().copyUncheckedList( toClazz, (List< Object >) value );
 		}
 
 		return value;
